@@ -11,6 +11,8 @@ UEditor 前台文件完全无修改,可自由gulp等工具部署到生产环境
 
 支持本地和七牛云存储,默认为本地上传 public/uploads
 
+改良融合阿里云oss
+
 ##ChangeLog
  1.4.0 版  支持 laravel5.3 更新百度 UEditor 1.4.3.3
 

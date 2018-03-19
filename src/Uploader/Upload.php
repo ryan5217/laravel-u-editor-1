@@ -2,6 +2,9 @@
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
+use App\Services\OSS;   //阿里云oss
+use DateTime;   //阿里云oss
+
 /**
  * Abstract Class Upload
  * 文件上传抽象类
@@ -167,14 +170,30 @@ abstract class Upload
      */
     public function getFileInfo()
     {
-        return array(
-            "state" => $this->stateInfo,
-            "url" => $this->fullName,
-            "title" => $this->fileName,
-            "original" => $this->oriName,
-            "type" => $this->fileType,
-            "size" => $this->fileSize
-        );
+        if (config('UEditorUpload.core.mode')=='oss') {
+            // 阿里云oss
+            $DateTime = new DateTime('+6000 day');
+            $url = OSS::getPrivateObjectURLWithExpireTime(config('oss.bucketName'), $this->fullName,$DateTime);
+            return array(
+                "state" => $this->stateInfo,
+                "url" => $url,
+                "title" => $this->fileName,
+                "original" => $this->oriName,
+                "type" => $this->fileType,
+                "size" => $this->fileSize
+            );
+
+        } else {
+            
+            return array(
+                "state" => $this->stateInfo,
+                "url" => $this->fullName,
+                "title" => $this->fileName,
+                "original" => $this->oriName,
+                "type" => $this->fileType,
+                "size" => $this->fileSize
+            );
+        }
     }
 
 }
